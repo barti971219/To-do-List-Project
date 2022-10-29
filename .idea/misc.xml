@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/insta_login.xml" value="0.2945" />
         <entry key="app/src/main/res/drawable/todo_bg.xml" value="0.2495" />
         <entry key="app/src/main/res/layout/activity_to_do.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_to_do_write.xml" value="0.30052083333333335" />
       </map>
     </option>
   </component>
