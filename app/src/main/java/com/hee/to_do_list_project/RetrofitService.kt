@@ -11,6 +11,11 @@ class ToDo(
 )
 interface RetrofitService {
 
+    @GET("to-do/")
+    fun getToDoList(
+        @HeaderMap headers: Map<String, String>
+    ):Call<ArrayList<ToDo>>
+
     @POST("to-do/")
     @FormUrlEncoded
     fun makeToDo(

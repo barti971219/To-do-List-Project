@@ -7,6 +7,8 @@
         <entry key="app/src/main/res/drawable/todo_bg.xml" value="0.2495" />
         <entry key="app/src/main/res/layout/activity_to_do.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_to_do_write.xml" value="0.30052083333333335" />
+        <entry key="app/src/main/res/layout/todo_content.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/todo_date.xml" value="0.17552083333333332" />
       </map>
     </option>
   </component>
