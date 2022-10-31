@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="30dp"
-    android:layout_marginBottom="9dp"
     android:orientation="vertical">
 
     <TextView
@@ -13,6 +12,36 @@
         android:textColor="#000000"
         android:textSize="20dp"
         android:text="안녕하세요"
-        android:layout_marginLeft="33dp"/>
+        android:layout_marginLeft="33dp"
+        android:layout_marginBottom="10dp"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="17dp"
+        android:layout_marginRight="17dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@drawable/todo_bg">
+
+        <ImageView
+            android:id="@+id/is_complete"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="27dp"
+            android:layout_marginTop="21dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="21dp"/>
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textColor="#1d1d1d"
+            android:gravity="center"/>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

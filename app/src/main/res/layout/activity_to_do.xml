@@ -20,6 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:focusableInTouchMode="true"
         android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="검색"
+            android:focusableInTouchMode="true"
             android:background="@drawable/todo_bg"
             android:layout_gravity="center_vertical"
             android:textColorHint="#5a5a5a"
@@ -54,9 +56,10 @@
         android:id="@+id/todo_list"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginLeft="17dp"
         android:layout_marginRight="17dp"
+        android:layout_marginBottom="17dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search"/>
 

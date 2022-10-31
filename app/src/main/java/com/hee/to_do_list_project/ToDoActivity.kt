@@ -81,9 +81,13 @@ class ToDoListRecyclerViewAdapter(
     var previousDate : String = ""
     inner class DateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val dateTextView : TextView
+        val content : TextView
+        val isComplete : ImageView
 
         init {
             dateTextView = itemView.findViewById(R.id.date)
+            content = itemView.findViewById(R.id.content)
+            isComplete = itemView.findViewById(R.id.is_complete)
         }
     }
 
@@ -119,6 +123,12 @@ class ToDoListRecyclerViewAdapter(
         val todo = todoList.get(position)
         if(holder is DateViewHolder){
             (holder as DateViewHolder).dateTextView.text = todo.created.split("T")[0]
+            (holder as DateViewHolder).content.text = todo.content
+            if(todo.is_complete){
+                (holder as DateViewHolder).isComplete.setImageDrawable(resource.getDrawable(R.drawable.btn_radio_check))
+            }else{
+                (holder as DateViewHolder).isComplete.setImageDrawable(resource.getDrawable(R.drawable.btn_radio))
+            }
         }else{
             (holder as ContentViewHolder).content.text = todo.content
             if(todo.is_complete){
