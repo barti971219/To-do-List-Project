@@ -1,6 +1,7 @@
 package com.hee.to_do_list_project
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
@@ -43,11 +44,11 @@ class ToDoWriteActivity : AppCompatActivity() {
 
             retrofitService.makeToDo(header, body).enqueue(object : Callback<Any>{
                 override fun onResponse(call: Call<Any>, response: Response<Any>) {
-                    Toast.makeText(this@ToDoWriteActivity, "makeToDo Success", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this@ToDoWriteActivity, ToDoActivity::class.java))
                 }
 
                 override fun onFailure(call: Call<Any>, t: Throwable) {
-
+                    onBackPressed()
                 }
             })
         }

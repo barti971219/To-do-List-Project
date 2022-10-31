@@ -9,9 +9,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ContentView
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
 import retrofit2.Callback
@@ -31,6 +33,76 @@ class ToDoActivity : AppCompatActivity() {
 
         todoRecyclerView = findViewById(R.id.todo_list)
         getToDoList()
+        findViewById<EditText>(R.id.search_edittext).doAfterTextChanged {
+            searchToDoList(it.toString())
+        }
+    }
+
+    fun searchToDoList(keyword:String){
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://mellowcode.org/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val retrofitService = retrofit.create(RetrofitService::class.java)
+
+        val header = HashMap<String, String>()
+        val sp = this.getSharedPreferences(
+            "user_info",
+            Context.MODE_PRIVATE
+        )
+        val token = sp.getString("token", "")
+        header.put("Authorization", "token " + token!!)
+
+        retrofitService.searchToDoList(header, keyword).enqueue(object : Callback<ArrayList<ToDo>>{
+            override fun onResponse(
+                call: Call<ArrayList<ToDo>>,
+                response: Response<ArrayList<ToDo>>
+            ) {
+                if(response.isSuccessful){
+                    val todoList = response.body()
+                    makeToDoList(todoList!!)
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<ToDo>>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+
+    fun makeToDoList(todoList : ArrayList<ToDo>){
+        todoRecyclerView.adapter =
+            ToDoListRecyclerViewAdapter(
+                todoList!!,
+                LayoutInflater.from(this@ToDoActivity),
+                this@ToDoActivity
+            )
+    }
+
+    fun changeToDoComplete(todoId:Int, activity: ToDoActivity){
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://mellowcode.org/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val retrofitService = retrofit.create(RetrofitService::class.java)
+
+        val header = HashMap<String, String>()
+        val sp = this.getSharedPreferences(
+            "user_info",
+            Context.MODE_PRIVATE
+        )
+        val token = sp.getString("token", "")
+        header.put("Authorization", "token " + token!!)
+
+        retrofitService.changeToDoComplete(header, todoId).enqueue(object : Callback<Any>{
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                activity.getToDoList()
+            }
+
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                activity.getToDoList()
+            }
+        })
     }
 
     fun getToDoList(){
@@ -58,12 +130,7 @@ class ToDoActivity : AppCompatActivity() {
                     for(i:Int in 0 until todoList!!.size){
                         Log.d("todoo", todoList.get(i).content)
                     }
-                    todoRecyclerView.adapter =
-                        ToDoListRecyclerViewAdapter(
-                            todoList!!,
-                            LayoutInflater.from(this@ToDoActivity),
-                            resources
-                        )
+                   makeToDoList(todoList)
                 }
             }
 
@@ -71,12 +138,13 @@ class ToDoActivity : AppCompatActivity() {
             }
         })
     }
+
 }
 
 class ToDoListRecyclerViewAdapter(
    val todoList : ArrayList<ToDo>,
    val inflater : LayoutInflater,
-   val resource : Resources
+   val activity : ToDoActivity
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     var previousDate : String = ""
     inner class DateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -88,6 +156,9 @@ class ToDoListRecyclerViewAdapter(
             dateTextView = itemView.findViewById(R.id.date)
             content = itemView.findViewById(R.id.content)
             isComplete = itemView.findViewById(R.id.is_complete)
+            isComplete.setOnClickListener{
+                activity.changeToDoComplete(todoList.get(adapterPosition).id, activity)
+            }
         }
     }
 
@@ -98,6 +169,9 @@ class ToDoListRecyclerViewAdapter(
         init {
             content = itemView.findViewById(R.id.content)
             isComplete = itemView.findViewById(R.id.is_complete)
+            isComplete.setOnClickListener{
+                activity.changeToDoComplete(todoList.get(adapterPosition).id, activity)
+            }
         }
     }
 
@@ -125,16 +199,16 @@ class ToDoListRecyclerViewAdapter(
             (holder as DateViewHolder).dateTextView.text = todo.created.split("T")[0]
             (holder as DateViewHolder).content.text = todo.content
             if(todo.is_complete){
-                (holder as DateViewHolder).isComplete.setImageDrawable(resource.getDrawable(R.drawable.btn_radio_check))
+                (holder as DateViewHolder).isComplete.setImageDrawable(activity.resources.getDrawable(R.drawable.btn_radio_check, activity.theme))
             }else{
-                (holder as DateViewHolder).isComplete.setImageDrawable(resource.getDrawable(R.drawable.btn_radio))
+                (holder as DateViewHolder).isComplete.setImageDrawable(activity.resources.getDrawable(R.drawable.btn_radio, activity.theme))
             }
         }else{
             (holder as ContentViewHolder).content.text = todo.content
             if(todo.is_complete){
-                (holder as ContentViewHolder).isComplete.setImageDrawable(resource.getDrawable(R.drawable.btn_radio_check))
+                (holder as ContentViewHolder).isComplete.setImageDrawable(activity.resources.getDrawable(R.drawable.btn_radio_check, activity.theme))
             }else{
-                (holder as ContentViewHolder).isComplete.setImageDrawable(resource.getDrawable(R.drawable.btn_radio))
+                (holder as ContentViewHolder).isComplete.setImageDrawable(activity.resources.getDrawable(R.drawable.btn_radio, activity.theme))
             }
         }
     }

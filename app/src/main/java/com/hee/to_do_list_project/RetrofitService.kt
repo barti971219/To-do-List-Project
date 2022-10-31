@@ -11,6 +11,18 @@ class ToDo(
 )
 interface RetrofitService {
 
+    @GET("to-do/search/")
+    fun searchToDoList(
+        @HeaderMap headers: Map<String, String>,
+        @Query("keyword") keyword : String
+    ):Call<ArrayList<ToDo>>
+
+    @PUT("to-do/complete/{todoId}")
+    fun changeToDoComplete(
+        @HeaderMap headers: Map<String, String>,
+        @Path("todoId") todoId: Int
+    ): Call<Any>
+
     @GET("to-do/")
     fun getToDoList(
         @HeaderMap headers: Map<String, String>
